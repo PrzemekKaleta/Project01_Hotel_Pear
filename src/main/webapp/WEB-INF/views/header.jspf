@@ -1,0 +1,17 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: przemo
+  Date: 27.07.19
+  Time: 16:46
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>header</title>
+</head>
+<body>
+<h2>header part</h2>
+<a href="/" >Strona Główna</a> <a href="/reserv/ask">Rezerwuj</a>
+</body>
+</html>
