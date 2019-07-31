@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <html>
 <head>
     <title>reserv</title>
@@ -23,12 +24,21 @@
         eget mi. Arcu odio ut sem nulla pharetra diam sit amet. Convallis tellus id interdum velit laoreet. Nulla posuere
         sollicitudin aliquam ultrices sagittis orci a. Sit amet justo donec enim diam vulputate ut pharetra sit.</p>
 
-    <form:form method="post" modelAttribute="reservAsk">
-        Data przyjazdu: <form:input path="dateFrom"/><br>
-        Data odjazdu: <form:input path="dateUntil"/><br>
-        Ilość osób: <form:input path="persons"/><br>
+    <form:form method="post" modelAttribute="reserveAsk">
 
-        <input type="submit" value="Sprawdź">
+        Data Przyjazdu: <form:select path="dateFrom">
+                            <form:options items="${dateFrom}"/>
+                        </form:select>
+
+        Data odjazdu:   <form:select path="dateUntil">
+                            <form:options items="${dateUntil}"/>
+                        </form:select>
+        <form:errors path="dateFrom" cssClass="error" />
+        <br>
+        Ilość osób <form:radiobuttons items="${roomsCapasity}" path="persons" /><br>
+        <form:errors path="persons" cssClass="error" />
+
+        <input type="submit" value="Sprawdź dostępność">
 
     </form:form>
 
