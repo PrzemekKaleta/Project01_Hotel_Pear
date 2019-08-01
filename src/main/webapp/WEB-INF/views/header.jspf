@@ -12,6 +12,8 @@
 </head>
 <body>
 <h2>header part</h2>
-<a href="/" >Strona Główna</a> <a href="/reserv/ask">Rezerwuj</a>
+<a href="/" >Strona Główna</a> <a href="/reserv/ask">Rezerwuj</a> <a href="/person/register">Zarejestruj</a> <a href="/person/login">Zaloguj</a>
+
+
 </body>
 </html>
