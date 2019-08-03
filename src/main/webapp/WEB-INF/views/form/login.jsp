@@ -25,6 +25,7 @@
     <form:errors path="email" cssClass="error"/><br>
     Hasło: <form:password path="password"/><br>
     <form:errors path="password" cssClass="error"/><br>
+    <form:errors path="*" cssClass="error"/><br>
 
     <input type="submit" value="Zaloguj">
 </form:form>

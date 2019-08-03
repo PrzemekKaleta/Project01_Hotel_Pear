@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.dto.ReserveAsk;
+import pl.coderslab.service.ReservationService;
+import pl.coderslab.service.SimpleReservationService;
+import pl.coderslab.session.PersonSession;
 
 import javax.validation.Valid;
 import java.time.LocalDate;
@@ -20,20 +23,50 @@ import java.util.List;
 @RequestMapping("/reserv")
 public class ReservationController {
 
+    private final ReservationService reservationService;
+    private final PersonSession personSession;
+
+    public ReservationController(SimpleReservationService reservationService, PersonSession personSession) {
+        this.reservationService = reservationService;
+        this.personSession = personSession;
+    }
+
     @GetMapping("/ask")
     public String getAsk(Model model){
-        model.addAttribute("reserveAsk", new ReserveAsk());
+        if(!(personSession.getReserveAsk()==null)){
+            model.addAttribute("reserveAsk", personSession.getReserveAsk());
+        }else {
+            model.addAttribute("reserveAsk", new ReserveAsk());
+        }
         return "form/reserve";
     }
 
     @PostMapping("/ask")
-    public String postAsk(@Valid ReserveAsk reserveAsk, BindingResult result){
+    public String postAsk(Model model, @Valid ReserveAsk reserveAsk, BindingResult result){
         if(result.hasErrors()){
                  result.addError(new FieldError("reserveAsk", "dateFrom", "Nieprawidłowe daty"));
                  return "form/reserve";
         }
-        return "redirect:/";
+
+        if(reservationService.canReserve(reserveAsk).isPossible()){
+
+            model.addAttribute("reply", true);
+
+            model.addAttribute("cost",reservationService.givePrice(reserveAsk));
+
+            model.addAttribute("emptyLog", personSession.getEmail()==null);
+
+            personSession.setReserveAsk(reserveAsk);
+
+        }else{
+            model.addAttribute("reply", false);
+
+        }
+
+        return "reply";
     }
+
+
 
 
     @ModelAttribute("roomsCapasity")

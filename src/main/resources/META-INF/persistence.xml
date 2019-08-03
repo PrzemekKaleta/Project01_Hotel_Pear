@@ -1,9 +1,30 @@
-<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
-             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
-             version="2.1">
-    <persistence-unit name="hotelPersistenceUnit">
+<!--<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"-->
+             <!--xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"-->
+             <!--xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence-->
+             <!--http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"-->
+             <!--version="2.1">-->
+    <persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+                 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+                 version="2.1">
+        <persistence-unit name="hotelPersistenceUnit">
+            <properties>
+                <property name="javax.persistence.jdbc.url"
+                          value="jdbc:postgresql://ec2-54-246-84-100.eu-west-1.compute.amazonaws.com:5432/dfu6l9mqc00jlq?sslmode=require"/>
+                <property name="javax.persistence.jdbc.user" value="pufeqldgjsfjkt"/>
+                <property name="javax.persistence.jdbc.password" value="3f0fbd6c4d5dd4285fb21b2c008ba16a22338a6fab91d67e2ad875b398a41996"/>
+                <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+                <property name="javax.persistence.schema-generation.database.action"
+                          value="none"/>            <property name="hibernate.hbm2ddl.auto" value="update"/>
+                <property name="hibernate.show_sql" value="true"/>
+                <property name="hibernate.format_sql" value="true"/>            <property name="hibernate.dialect"
+                                                                                          value="org.hibernate.dialect.PostgreSQLDialect"/>
+                <property name="hibernate.connection.characterEncoding" value="utf8"/>
+            </properties>
+        </persistence-unit>
+    </persistence>
+    <!--<persistence-unit name="hotelPersistenceUnit">
         <properties>
             <property name="javax.persistence.jdbc.url"
                       value="jdbc:mysql://localhost:3306/Project01_Hotel_Pear?serverTimezone=UTC" />
@@ -16,8 +37,8 @@
                       value="none"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
 
-            <!--<property name="hibernate.hbm2ddl.auto" value="create-drop"/>-->
-            <!--create-drop   create   update-->
+            &lt;!&ndash;<property name="hibernate.hbm2ddl.auto" value="create-drop"/>&ndash;&gt;
+            &lt;!&ndash;create-drop   create   update&ndash;&gt;
 
 
             <property name="hibernate.show_sql" value="true"/>
@@ -26,6 +47,6 @@
                       value="org.hibernate.dialect.MySQL57Dialect" />
             <property name="hibernate.connection.characterEncoding" value="utf8" />
         </properties>
-    </persistence-unit>
+    </persistence-unit>-->
 
-</persistence>
+<!--</persistence>-->

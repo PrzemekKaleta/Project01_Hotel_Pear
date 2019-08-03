@@ -7,7 +7,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.dto.PersonDTO;
@@ -51,8 +50,11 @@ public class PersonController {
         guest.setPassword(encodedPassword);
         personRepository.save(guest);
         personSession.setEmail(guest.getEmail());
-        return "redirect:/";
 
+        if(!(personSession.getReserveAsk()==null)){
+            return "redirect:../reserv/ask";
+        }
+        return "redirect:/";
     }
 
     @GetMapping("/login")
@@ -69,17 +71,22 @@ public class PersonController {
         String codedPassword = personRepository.findPasswordByEmail(personDTO.getEmail());
         if(passwordEncoder.matches(personDTO.getPassword(),codedPassword)){
             personSession.setEmail(personDTO.getEmail());
+            if(!(personSession.getReserveAsk()==null)) {
+                return "redirect:../reserv/ask";
+            }
             return "redirect:/";
         }else{
             result.addError(new ObjectError("personDTO", "Podano nieprawidłowy adres lub hasło"));
         }
-        return "form/login";
 
+        return "form/login";
     }
 
-    @PostMapping("/logout")
-    public void logout(){
+    @GetMapping("/logout")
+    public String logout(){
         personSession.setEmail(null);
+        personSession.setReserveAsk(null);
+        return "redirect:/";
     }
 
 }

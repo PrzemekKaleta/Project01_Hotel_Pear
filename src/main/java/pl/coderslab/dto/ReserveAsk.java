@@ -26,6 +26,15 @@ public class ReserveAsk {
         }
         return true;
     }
+    private boolean isPossible;
+
+    public boolean isPossible() {
+        return isPossible;
+    }
+
+    public void setPossible(boolean possible) {
+        isPossible = possible;
+    }
 
     public LocalDate getDateFrom() {
         return dateFrom;
