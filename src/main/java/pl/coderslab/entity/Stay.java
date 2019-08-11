@@ -15,6 +15,8 @@ public class Stay {
 
     private LocalDate stayUntil;
 
+    private StayState stayState;
+
     @ManyToOne
     @NotNull
     private Room room;
@@ -22,6 +24,17 @@ public class Stay {
     @ManyToOne
     @NotNull
     private Guest guest;
+
+
+    public StayState getStayState() {
+        return stayState;
+    }
+
+
+
+    public void setStayState(StayState stayState) {
+        this.stayState = stayState;
+    }
 
     public Long getId() {
         return id;
@@ -61,5 +74,15 @@ public class Stay {
 
     public void setGuest(Guest guest) {
         this.guest = guest;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Stay{");
+        sb.append("id=").append(id);
+        sb.append(", stayState=").append(stayState);
+        sb.append(", room=").append(room);
+        sb.append('}');
+        return sb.toString();
     }
 }

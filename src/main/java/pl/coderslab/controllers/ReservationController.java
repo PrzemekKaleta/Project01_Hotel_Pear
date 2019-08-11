@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.dto.ReserveAsk;
+import pl.coderslab.service.DBReservationService;
 import pl.coderslab.service.ReservationService;
 import pl.coderslab.service.SimpleReservationService;
 import pl.coderslab.session.PersonSession;
@@ -26,7 +27,7 @@ public class ReservationController {
     private final ReservationService reservationService;
     private final PersonSession personSession;
 
-    public ReservationController(SimpleReservationService reservationService, PersonSession personSession) {
+    public ReservationController(DBReservationService reservationService, PersonSession personSession) {
         this.reservationService = reservationService;
         this.personSession = personSession;
     }
@@ -66,13 +67,10 @@ public class ReservationController {
         return "reply";
     }
 
-
-
-
-    @ModelAttribute("roomsCapasity")
-    public List<Integer> roomsCapasity() {
-        Integer[] capasity = new Integer[] {1,2,3,4};
-        return Arrays.asList(capasity);
+    @ModelAttribute("roomsCapacity")
+    public List<Integer> roomsCapacity() {
+        Integer[] capacity = new Integer[] {1,2,3,4};
+        return Arrays.asList(capacity);
     }
 
     @ModelAttribute("dateFrom")

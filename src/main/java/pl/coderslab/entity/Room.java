@@ -16,7 +16,7 @@ public class Room {
     private Long Id;
 
     @Range(min = 1, max = 4)
-    private int capsity;
+    private int capacity;
 
     @NotBlank
     private int number;
@@ -29,12 +29,12 @@ public class Room {
         Id = id;
     }
 
-    public int getCapsity() {
-        return capsity;
+    public int getCapacity() {
+        return capacity;
     }
 
-    public void setCapsity(int capsity) {
-        this.capsity = capsity;
+    public void setCapacity(int capsity) {
+        this.capacity = capsity;
     }
 
     public int getNumber() {
@@ -43,5 +43,14 @@ public class Room {
 
     public void setNumber(int number) {
         this.number = number;
+    }
+
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Room{");
+        sb.append("Id=").append(Id);
+        sb.append(", capacity=").append(capacity);
+        sb.append('}');
+        return sb.toString();
     }
 }

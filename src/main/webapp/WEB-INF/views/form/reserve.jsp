@@ -35,7 +35,7 @@
                         </form:select>
         <form:errors path="dateFrom" cssClass="error" />
         <br>
-        Ilość osób <form:radiobuttons items="${roomsCapasity}" path="persons" /><br>
+        Ilość osób <form:radiobuttons items="${roomsCapacity}" path="persons" /><br>
         <form:errors path="persons" cssClass="error" />
 
         <input type="submit" value="Sprawdź dostępność">
