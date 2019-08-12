@@ -17,6 +17,8 @@ public class ReserveAsk {
     @Range(min = 1, max = 4, message ="należy wybrać wielkość pokoju od 1 do 4 osobowego")
     private int persons;
 
+    private int capacity;
+
     @AssertTrue (message = "")
     public boolean isValidRange() {
         if(dateFrom.compareTo(LocalDate.now()) < 1) {
@@ -34,6 +36,14 @@ public class ReserveAsk {
 
     public void setPossible(boolean possible) {
         isPossible = possible;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
     }
 
     public LocalDate getDateFrom() {

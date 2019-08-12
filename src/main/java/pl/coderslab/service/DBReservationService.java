@@ -5,11 +5,8 @@ import pl.coderslab.dto.ReserveAsk;
 import pl.coderslab.entity.Room;
 import pl.coderslab.entity.Stay;
 import pl.coderslab.entity.StayState;
-import pl.coderslab.pojo.RoomFitObject;
 import pl.coderslab.repository.RoomRepository;
 import pl.coderslab.repository.StayRepository;
-
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,13 +28,14 @@ public class DBReservationService extends ReservationService {
     @Override
     public ReserveAsk canReserve(ReserveAsk reserveAsk) {
 
+        reserveAsk.setCapacity(reserveAsk.getPersons());
 
-        while(reserveAsk.getPersons()<MAXCAPACITY) {
-            if (findRoom(reserveAsk)) {
+        while(reserveAsk.getCapacity()<MAXCAPACITY) {
+            if (!findRoom(reserveAsk).isEmpty()) {
                 reserveAsk.setPossible(true);
                 return reserveAsk;
             } else {
-                reserveAsk.setPersons(reserveAsk.getPersons() + 1);
+                reserveAsk.setCapacity(reserveAsk.getCapacity() + 1);
             }
         }
         reserveAsk.setPossible(false);
@@ -46,6 +44,9 @@ public class DBReservationService extends ReservationService {
 
     @Override
     public double givePrice(ReserveAsk reserveAsk) {
+
+
+
         return 0;
     }
 
@@ -55,10 +56,10 @@ public class DBReservationService extends ReservationService {
     }
 
     @Override
-    public boolean findRoom(ReserveAsk reserveAsk) {
+    public Map<Long, Double> findRoom(ReserveAsk reserveAsk) {
 
         //zapisujemy stałe dane: pojemność pokojów które będą przeglądane, liczby reprezentujące zapytanie od kiedy do kiedy ma być szukane miejsce
-        int roomCapacity = reserveAsk.getPersons();
+        int roomCapacity = reserveAsk.getCapacity();
         long askFromNumber = reserveAsk.getDateFrom().toEpochDay();
         long askUntilNumber = reserveAsk.getDateUntil().toEpochDay();
 
@@ -136,10 +137,7 @@ public class DBReservationService extends ReservationService {
 
         fitMap.entrySet().stream().forEach(System.out::println);
 
-        if(fitMap.isEmpty()){
-            return false;
-        }else{
-            return true;
-        }
+        return fitMap;
+
     }
 }

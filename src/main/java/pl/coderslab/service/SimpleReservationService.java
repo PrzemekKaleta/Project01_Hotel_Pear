@@ -3,6 +3,9 @@ package pl.coderslab.service;
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.ReserveAsk;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class SimpleReservationService extends ReservationService {
 
@@ -12,7 +15,7 @@ public class SimpleReservationService extends ReservationService {
     public ReserveAsk canReserve(ReserveAsk reserveAsk) {
 
         while(reserveAsk.getPersons()<5) {
-            if (findRoom(reserveAsk)) {
+            if (!findRoom(reserveAsk).isEmpty()) {
                 reserveAsk.setPossible(true);
                 return reserveAsk;
             } else {
@@ -24,16 +27,18 @@ public class SimpleReservationService extends ReservationService {
     }
 
     @Override
-    public boolean findRoom(ReserveAsk reserveAsk) {
+    public Map<Long, Double> findRoom(ReserveAsk reserveAsk) {
+
+        Map<Long, Double> changed = new HashMap<>();
 
         i++;
         System.out.println("liczba to " + i);
         if(i%2==0){
             System.out.println(i%2);
-            return false;
+            return changed;
         }
-        System.out.println(i%2);
-        return true;
+        changed.put(1L,2.0);
+        return changed;
     }
 
     @Override

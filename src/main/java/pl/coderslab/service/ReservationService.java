@@ -2,6 +2,8 @@ package pl.coderslab.service;
 
 import pl.coderslab.dto.ReserveAsk;
 
+import java.util.Map;
+
 public abstract class ReservationService {
 
     public abstract ReserveAsk canReserve(ReserveAsk reserveAsk);
@@ -10,5 +12,5 @@ public abstract class ReservationService {
 
     public abstract void reserv();
 
-    public abstract boolean findRoom(ReserveAsk reserveAsk);
+    public abstract Map<Long, Double> findRoom(ReserveAsk reserveAsk);
 }
