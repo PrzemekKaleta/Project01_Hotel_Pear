@@ -74,6 +74,10 @@ public class DBReservationService extends ReservationService {
             //w pierwszej kolejności tworzymy listę pobytów które albo są aktualne albo są zarezerwowane (tj są aktywne, aby nie ściągać historycznych danych)
             List<Stay>stays = stayRepository.findAllByStayStatesAndRoomId(StayState.CURRENT, StayState.RESERVED, rooms.get(i).getId());
 
+            //tworzymy boolean który będzie przechowywał czy dany pokój może być zarezerwowany, na początku dajemy true
+
+            boolean canReserveRoom = true;
+
             //jeżeli lista jest pusta to oznacza że nie ma jeszcze aktywnych pobytów i odrazu możemy zapisać pokój do MAPY fitMap, nadając liczbę fit 10
             if(stays.isEmpty()){
 
@@ -86,7 +90,7 @@ public class DBReservationService extends ReservationService {
                 long holeAfter = 10;
 
                 //j-terójemy po liście pobytów dla danego pokoju
-                for(int j = 0 ; j < stays.size() ; j ++){
+                for(int j = 0; j < stays.size(); j++){
 
                     //zapisujemy wartości w postaci liczbowej dla dnia rozpoczęcia i zakończenia pobytu, do którego będziemy dopasowywać zapytanie
                     long stayFromNumber = stays.get(j).getStayFrom().toEpochDay();
@@ -100,33 +104,42 @@ public class DBReservationService extends ReservationService {
                     System.out.println("różnica: " + differenceStayFromToAskUntil + " pomiędzy StayFrom " + stayFromNumber + ", a AskUntil " + askUntilNumber);
 
                     //sprawdzenie warunków obie liczby "różnice" powinny mieć inny znak
-                    if((differenceAskFromToStayUntil >= 0 && differenceStayFromToAskUntil <= 0)||(differenceAskFromToStayUntil <=0 && differenceStayFromToAskUntil >= 0){
+                    if ((differenceAskFromToStayUntil >= 0 && differenceStayFromToAskUntil <= 0) || (differenceAskFromToStayUntil <= 0 && differenceStayFromToAskUntil >= 0)) {
 
                         //sprawdzamy czy różnica przed jest dodatnia lub zerowa, jeżeli tak to czy jest też mniejsza od dotychczasowej wartości bo...
                         //...jeżeli będziemy i-terować to kolejne pobyty mogą być bliżej najszego zapytania a wiec stopień dopasowania będzie lepszy...
                         //...jeżeli tego nie dodamy tego warunku to możemy nadpisać lepsze dopasowanie gorszym
-                        if(differenceAskFromToStayUntil>=0 && differenceAskFromToStayUntil < holeBefore){
+                        if (differenceAskFromToStayUntil >= 0 && differenceAskFromToStayUntil < holeBefore) {
                             holeBefore = differenceAskFromToStayUntil;
-                            }
-                            // podobnie jak poprzednio sprawdzamy dopasowanie po (tutaj pierwszy warunek powinien być już spełniony z automatu - jeżeli wykożysta się 'else if'
-                         if(differenceStayFromToAskUntil >= 0 && differenceStayFromToAskUntil < holeAfter){
-                             holeAfter = differenceStayFromToAskUntil;
-                         }
+                        }
+                        // podobnie jak poprzednio sprawdzamy dopasowanie po (tutaj pierwszy warunek powinien być już spełniony z automatu - jeżeli wykożysta się 'else if'
+                        if (differenceStayFromToAskUntil >= 0 && differenceStayFromToAskUntil < holeAfter) {
+                            holeAfter = differenceStayFromToAskUntil;
+                        }
+
+                    }else{
+                        //jeżeli warunek nie jest spełniony oznacza to że conajmniej jeden pobyt koliduje z zapytaniem
+                        canReserveRoom = false;
 
                     }
-
-
-
                 }
 
+                if(canReserveRoom){
 
+                    double fitNumber = Math.sqrt(holeBefore) * Math.sqrt(holeAfter);
+
+                    fitMap.put(rooms.get(i).getId(), fitNumber);
+                }
             }
-
-            stays.stream().forEach(System.out::println);
 
         }
 
+        fitMap.entrySet().stream().forEach(System.out::println);
 
-        return false;
+        if(fitMap.isEmpty()){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
