@@ -9,4 +9,6 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room>findAllByCapacity(int capacity);
 
-}
+    Room findById(Long idRoom);
+
+    }

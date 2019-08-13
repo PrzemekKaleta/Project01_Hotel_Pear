@@ -2,11 +2,16 @@ package pl.coderslab.service;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.ReserveAsk;
+import pl.coderslab.entity.Guest;
 import pl.coderslab.entity.Room;
 import pl.coderslab.entity.Stay;
 import pl.coderslab.entity.StayState;
+import pl.coderslab.repository.PersonRepository;
 import pl.coderslab.repository.RoomRepository;
+import pl.coderslab.repository.StayCostsRepository;
 import pl.coderslab.repository.StayRepository;
+import pl.coderslab.session.PersonSession;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,10 +22,16 @@ public class DBReservationService extends ReservationService {
 
     public final RoomRepository roomRepository;
     public final StayRepository stayRepository;
+    public final StayCostsRepository stayCostsRepository;
+    public final PersonRepository personRepository;
+    public final PersonSession personSession;
 
-    public DBReservationService(RoomRepository roomRepository, StayRepository stayRepository) {
+    public DBReservationService(RoomRepository roomRepository, StayRepository stayRepository, StayCostsRepository stayCostsRepository, PersonRepository personRepository, PersonSession personSession) {
         this.roomRepository = roomRepository;
         this.stayRepository = stayRepository;
+        this.stayCostsRepository = stayCostsRepository;
+        this.personRepository = personRepository;
+        this.personSession = personSession;
     }
 
     private final int MAXCAPACITY = 4;
@@ -45,13 +56,33 @@ public class DBReservationService extends ReservationService {
     @Override
     public double givePrice(ReserveAsk reserveAsk) {
 
+        int capacity = reserveAsk.getCapacity();
+        int person = reserveAsk.getPersons();
+        long period = reserveAsk.getDateUntil().toEpochDay() - reserveAsk.getDateFrom().toEpochDay();
 
+        double price = stayCostsRepository.findPriceByResidentsNumberAndRoomCapacity(person, capacity);
 
-        return 0;
+        return price * period;
     }
 
     @Override
-    public void reserv() {
+    public Stay reserv(ReserveAsk reserveAsk) {
+
+        Stay stay = new Stay();
+        stay.setStayFrom(reserveAsk.getDateFrom());
+        stay.setStayUntil(reserveAsk.getDateUntil());
+        stay.setStayState(StayState.RESERVED);
+
+        Map<Long, Double>mapFitRooms = findRoom(reserveAsk);
+        Map.Entry<Long, Double> idChoosenRoom = mapFitRooms.entrySet().stream().min(Map.Entry.comparingByValue(Double::compareTo)).get();
+
+        stay.setRoom(roomRepository.findById(idChoosenRoom.getKey()));
+        stay.setGuest((Guest) personRepository.findPersonByEmail(personSession.getEmail()));
+        stay.setResidents(reserveAsk.getPersons());
+        stay.setCost(givePrice(reserveAsk));
+        stayRepository.save(stay);
+
+        return stay;
 
     }
 

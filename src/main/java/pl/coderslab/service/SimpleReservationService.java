@@ -2,6 +2,7 @@ package pl.coderslab.service;
 
 import org.springframework.stereotype.Service;
 import pl.coderslab.dto.ReserveAsk;
+import pl.coderslab.entity.Stay;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,9 +43,9 @@ public class SimpleReservationService extends ReservationService {
     }
 
     @Override
-    public void reserv() {
+    public Stay reserv(ReserveAsk reserveAsk) {
         System.out.println("zarezewowałem");
-
+        return null;
     }
 
     @Override

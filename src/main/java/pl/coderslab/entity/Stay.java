@@ -25,12 +25,30 @@ public class Stay {
     @NotNull
     private Guest guest;
 
+    private int residents;
+
+    private double cost;
+
+    public double getCost() {
+        return cost;
+    }
+
+    public void setCost(double cost) {
+        this.cost = cost;
+    }
 
     public StayState getStayState() {
         return stayState;
     }
 
 
+    public int getResidents() {
+        return residents;
+    }
+
+    public void setResidents(int residents) {
+        this.residents = residents;
+    }
 
     public void setStayState(StayState stayState) {
         this.stayState = stayState;

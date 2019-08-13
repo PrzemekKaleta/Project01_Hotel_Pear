@@ -9,9 +9,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import pl.coderslab.dto.ReserveAsk;
+import pl.coderslab.dto.StayDTO;
+import pl.coderslab.entity.Stay;
 import pl.coderslab.service.DBReservationService;
 import pl.coderslab.service.ReservationService;
-import pl.coderslab.service.SimpleReservationService;
 import pl.coderslab.session.PersonSession;
 
 import javax.validation.Valid;
@@ -48,23 +49,14 @@ public class ReservationController {
                  result.addError(new FieldError("reserveAsk", "dateFrom", "Nieprawidłowe daty"));
                  return "form/reserve";
         }
-        System.out.println("przed zapytaniem persons: " + reserveAsk.getPersons());
-        System.out.println("przed zapytaniem capacity:" + reserveAsk.getCapacity());
+
         if(reservationService.canReserve(reserveAsk).isPossible()){
 
-            System.out.println("zaraz po zapytaniu persons: " + reserveAsk.getPersons());
-            System.out.println("zaraz po zapytaniu capacity:  " + reserveAsk.getCapacity());
-
             model.addAttribute("reply", true);
-
             model.addAttribute("cost",reservationService.givePrice(reserveAsk));
-
             model.addAttribute("emptyLog", personSession.getEmail()==null);
 
             personSession.setReserveAsk(reserveAsk);
-
-            System.out.println("po dodaniu do sesji persons: " + reserveAsk.getPersons());
-            System.out.println("po dodaniu do sesji capacty: " + reserveAsk.getCapacity());
 
         }else{
             model.addAttribute("reply", false);
@@ -72,6 +64,22 @@ public class ReservationController {
         }
 
         return "reply";
+    }
+
+    @PostMapping("/confirm")
+    public String postConfirm(Model model){
+
+        if(personSession.getEmail()==null){
+            return "form/login";
+        }else{
+           // Long reservationId = reservationService.reserv(personSession.getReserveAsk());
+            Stay stay = reservationService.reserv(personSession.getReserveAsk());
+            StayDTO stayDTO = new StayDTO(stay.getStayFrom(),stay.getStayUntil(),stay.getResidents(),stay.getRoom().getCapacity(),stay.getCost());
+            model.addAttribute("stayDTO", stayDTO);
+            return "confirmation";
+        }
+
+
     }
 
     @ModelAttribute("roomsCapacity")

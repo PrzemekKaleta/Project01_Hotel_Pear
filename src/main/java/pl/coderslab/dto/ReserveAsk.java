@@ -3,8 +3,6 @@ package pl.coderslab.dto;
 import org.hibernate.validator.constraints.Range;
 
 import javax.validation.constraints.AssertTrue;
-import javax.validation.constraints.Future;
-import javax.validation.constraints.Min;
 import java.time.LocalDate;
 
 
