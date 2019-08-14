@@ -26,8 +26,8 @@
     <br>
     <c:if test="${emptyLog==false}">
 
-        <input type="submit" value="Zatwierdź">
         <button onclick="location.href='/reserv/confirm'" type="button">Zatwierdź</button>
+
     </c:if>
     <c:if test="${emptyLog==true}">
          Zarejestruj lub Zaloguj jeżeli chcesz potwierdzić rezerwację)

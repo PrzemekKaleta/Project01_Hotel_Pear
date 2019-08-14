@@ -66,8 +66,8 @@ public class ReservationController {
         return "reply";
     }
 
-    @PostMapping("/confirm")
-    public String postConfirm(Model model){
+    @GetMapping("/confirm")
+    public String getConfirm(Model model){
 
         if(personSession.getEmail()==null){
             return "form/login";

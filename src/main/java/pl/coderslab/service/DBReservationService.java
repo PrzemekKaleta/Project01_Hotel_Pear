@@ -12,6 +12,7 @@ import pl.coderslab.repository.StayCostsRepository;
 import pl.coderslab.repository.StayRepository;
 import pl.coderslab.session.PersonSession;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -76,7 +77,7 @@ public class DBReservationService extends ReservationService {
         Map<Long, Double>mapFitRooms = findRoom(reserveAsk);
         Map.Entry<Long, Double> idChoosenRoom = mapFitRooms.entrySet().stream().min(Map.Entry.comparingByValue(Double::compareTo)).get();
 
-        stay.setRoom(roomRepository.findById(idChoosenRoom.getKey()));
+        stay.setRoom(roomRepository.findByID(idChoosenRoom.getKey()));
         stay.setGuest((Guest) personRepository.findPersonByEmail(personSession.getEmail()));
         stay.setResidents(reserveAsk.getPersons());
         stay.setCost(givePrice(reserveAsk));
@@ -132,8 +133,8 @@ public class DBReservationService extends ReservationService {
                     long differenceAskFromToStayUntil = askFromNumber - stayUntilNumber;
                     long differenceStayFromToAskUntil = stayFromNumber - askUntilNumber;
 
-                    System.out.println("różnica: " + differenceAskFromToStayUntil + " pomiędzy AskFrom " + askFromNumber + ", a StayUntil " + stayUntilNumber);
-                    System.out.println("różnica: " + differenceStayFromToAskUntil + " pomiędzy StayFrom " + stayFromNumber + ", a AskUntil " + askUntilNumber);
+                    System.out.println("różnica: " + differenceAskFromToStayUntil + " pomiędzy AskFrom " + LocalDate.ofEpochDay(askFromNumber) + ", a StayUntil " + LocalDate.ofEpochDay(stayUntilNumber));
+                    System.out.println("różnica: " + differenceStayFromToAskUntil + " pomiędzy StayFrom " + LocalDate.ofEpochDay(stayFromNumber) + ", a AskUntil " + LocalDate.ofEpochDay(askUntilNumber));
 
                     //sprawdzenie warunków obie liczby "różnice" powinny mieć inny znak
                     if ((differenceAskFromToStayUntil >= 0 && differenceStayFromToAskUntil <= 0) || (differenceAskFromToStayUntil <= 0 && differenceStayFromToAskUntil >= 0)) {

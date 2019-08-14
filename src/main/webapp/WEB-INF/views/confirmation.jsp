@@ -12,5 +12,18 @@
 </head>
 <body>
 
+<%@ include file="header.jspf" %>
+
+<h1>CONFIRMATION PAGE</h1>
+
+<p>Aliquet nec ullamcorper sit amet risus. Diam sit amet nisl suscipit adipiscing.</p>
+
+<p>Rezerwacja została przyjęta, czekamy na Twoje przybycie</p>
+
+<p>W przypadku odwołania rezerwacji prosimy o kontakt</p>
+
+
+<%@ include file="footer.jspf" %>
+
 </body>
 </html>
