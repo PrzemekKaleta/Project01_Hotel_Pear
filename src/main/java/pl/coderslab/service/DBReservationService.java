@@ -70,8 +70,8 @@ public class DBReservationService extends ReservationService {
     public Stay reserv(ReserveAsk reserveAsk) {
 
         Stay stay = new Stay();
-        stay.setStayFrom(reserveAsk.getDateFrom());
-        stay.setStayUntil(reserveAsk.getDateUntil());
+        stay.setStayFrom(reserveAsk.getDateFrom().plusDays(1));
+        stay.setStayUntil(reserveAsk.getDateUntil().plusDays(1));
         stay.setStayState(StayState.RESERVED);
 
         Map<Long, Double>mapFitRooms = findRoom(reserveAsk);

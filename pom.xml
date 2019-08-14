@@ -16,7 +16,7 @@
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        
+
         <!--<full-artifact-name>target/${project.artifactId}-${project.version}.jar</full-artifact-name>-->
     </properties>
 
