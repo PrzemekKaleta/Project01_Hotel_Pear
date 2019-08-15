@@ -13,7 +13,37 @@
 </head>
 <body>
 <h2>header part</h2>
-<a href="/" >Strona Główna</a> <a href="/reserv/ask">Rezerwuj</a> <a href="/person/register">Zarejestruj</a> <a href="/person/login">Zaloguj</a> <a href="/person/logout">Wyloguj</a>
+<a href="/" >Strona Główna</a> <a href="/reserv/ask">Rerezerwuj</a>
+
+
+<c:if test="${cookie.log.value =='Guest'}">
+
+    <a href="/person/logout">Wyloguj</a>
+
+</c:if>
+<c:if test="${cookie.log.value =='Employee'}">
+
+    <a href="/reservations">Grafik Rezerwacji</a>
+
+    <a href="/person/logout">Wyloguj</a>
+
+</c:if>
+<c:if test="${cookie.log.value =='Admin'}">
+
+    <a href="/form/permissions">Uprawnienia</a>
+
+    <a href="/price-list">Cennik</a>
+
+    <a href="/salary">Wynagrodzenia</a>
+
+    <a href="/person/logout">Wyloguj</a>
+
+</c:if>
+<c:if test="${!cookie.containsKey('log')}">
+
+    <a href="/person/register">Zarejestruj</a> <a href="/person/login">Zaloguj</a>
+
+</c:if>
 
 </body>
 </html>

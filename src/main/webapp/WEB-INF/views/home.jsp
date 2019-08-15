@@ -13,6 +13,7 @@
 <body>
 
 <%@ include file="header.jspf" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <h1>HOME PAGE</h1>
 

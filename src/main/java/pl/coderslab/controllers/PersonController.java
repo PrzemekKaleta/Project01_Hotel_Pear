@@ -14,6 +14,9 @@ import pl.coderslab.entity.Guest;
 import pl.coderslab.repository.PersonRepository;
 import pl.coderslab.session.PersonSession;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 @Controller
@@ -37,7 +40,7 @@ public class PersonController {
     }
 
     @PostMapping("/register")
-    public String registerPost(@Valid Guest guest, BindingResult result){
+    public String registerPost(@Valid Guest guest, BindingResult result, HttpServletResponse response){
         if(result.hasErrors()){
             return "form/registration";
         }
@@ -51,6 +54,11 @@ public class PersonController {
         personRepository.save(guest);
         personSession.setEmail(guest.getEmail());
 
+        Cookie cookie = new Cookie("log","Guest");
+        cookie.setMaxAge(60*60);
+        cookie.setPath("/");
+        response.addCookie(cookie);
+
         if(!(personSession.getReserveAsk()==null)){
             return "redirect:../reserv/ask";
         }
@@ -63,7 +71,7 @@ public class PersonController {
         return "form/login";
     }
     @PostMapping("/login")
-    public String loginPost(@Valid PersonDTO personDTO, BindingResult result){
+    public String loginPost(@Valid PersonDTO personDTO, BindingResult result, HttpServletResponse response){
 
         if(result.hasErrors()){
             return "form/login";
@@ -71,7 +79,15 @@ public class PersonController {
         String codedPassword = personRepository.findPasswordByEmail(personDTO.getEmail());
         if(passwordEncoder.matches(personDTO.getPassword(),codedPassword)){
             personSession.setEmail(personDTO.getEmail());
+
+            Cookie cookie = new Cookie("log",personRepository.findPersonByEmail(personDTO.getEmail()).getClass().getSimpleName());
+            cookie.setMaxAge(60*60);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+
             if(!(personSession.getReserveAsk()==null)) {
+
+
                 return "redirect:../reserv/ask";
             }
             return "redirect:/";
@@ -83,9 +99,24 @@ public class PersonController {
     }
 
     @GetMapping("/logout")
-    public String logout(){
+    public String logout(HttpServletRequest request, HttpServletResponse response){
         personSession.setEmail(null);
         personSession.setReserveAsk(null);
+        Cookie[] cookies = request.getCookies();
+        for(Cookie c:cookies){
+            System.out.println(c.getName() + " " + c.getValue() + " " + c.getMaxAge());
+        }
+        String cookieName = "log";
+        for (Cookie c : cookies) {
+            if (cookieName.equals(c.getName())) {
+                c.setPath("/");
+                c.setValue("false");
+                c.setMaxAge(0);
+                response.addCookie(c);
+            }
+        }
+
+
         return "redirect:/";
     }
 
