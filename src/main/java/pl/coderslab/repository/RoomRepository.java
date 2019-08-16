@@ -11,6 +11,9 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
     List<Room>findAllByCapacity(int capacity);
 
+    @Query("select r.Id from Room r")
+    List<Long>getAllId();
+
     @Query("select r from Room r where r.Id = :roomID")
     Room findByID(@Param("roomID") Long roomID);
 
