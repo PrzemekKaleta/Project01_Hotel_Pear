@@ -10,9 +10,7 @@
     <packaging>war</packaging>
 
     <properties>
-        <org.springframework.version>
-            4.3.7.RELEASE
-        </org.springframework.version>
+        <org.springframework.version>5.2.20.RELEASE</org.springframework.version>
         <failOnMissingWebXml>false</failOnMissingWebXml>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
